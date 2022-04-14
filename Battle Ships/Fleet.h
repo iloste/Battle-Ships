@@ -10,6 +10,8 @@ public:
 	Fleet();
 	Fleet(bool autoPlaceShips);
 	Ship* getShips();
+	bool hitShip(Coordinate coord);
+	bool fleetDestroyed();
 
 private:
 	static const int shipSizes[5];
@@ -20,5 +22,6 @@ private:
 	bool collidesWithShip(Ship ship1, Ship ship2);
 	void autoPlaceShips();
 	Ship* ships;
+
 };
 

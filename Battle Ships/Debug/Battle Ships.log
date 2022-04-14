@@ -1,9 +1,7 @@
 ﻿  Battle Ships.cpp
 C:\Users\LukeR\OneDrive\Documents\GitHub\Battle-Ships\Battle Ships\Output.h(22,2): warning C4091: 'static ': ignored on left of 'Output' when no variable is declared
-  Grid.cpp
-C:\Users\LukeR\OneDrive\Documents\GitHub\Battle-Ships\Battle Ships\Output.h(22,2): warning C4091: 'static ': ignored on left of 'Output' when no variable is declared
-C:\Users\LukeR\OneDrive\Documents\GitHub\Battle-Ships\Battle Ships\Grid.cpp(30,23): warning C4018: '<': signed/unsigned mismatch
-  Output.cpp
-C:\Users\LukeR\OneDrive\Documents\GitHub\Battle-Ships\Battle Ships\Output.h(22,2): warning C4091: 'static ': ignored on left of 'Output' when no variable is declared
+C:\Users\LukeR\OneDrive\Documents\GitHub\Battle-Ships\Battle Ships\Input.h(14,2): warning C4091: 'static ': ignored on left of 'Input' when no variable is declared
+C:\Users\LukeR\OneDrive\Documents\GitHub\Battle-Ships\Battle Ships\Battle Ships.cpp(28,22): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Fleet.cpp
   Generating Code...
   Battle Ships.vcxproj -> C:\Users\LukeR\OneDrive\Documents\GitHub\Battle-Ships\Battle Ships\Debug\Battle Ships.exe

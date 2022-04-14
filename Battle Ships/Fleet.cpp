@@ -12,6 +12,7 @@ Fleet::Fleet() {
 Fleet::Fleet(bool _autoPlaceShips) {
 	ships = new Ship[5]();
 
+	// to do: give the player the option to autoplace ships too
 	if (_autoPlaceShips)
 	{
 		autoPlaceShips();
@@ -125,4 +126,31 @@ bool Fleet::collidesWithShip(Ship ship1, Ship ship2) {
 	}
 
 	return false;
+}
+
+
+bool Fleet::hitShip(Coordinate coord) {
+	for (size_t i = 0; i < numberOfShips; i++)
+	{
+		if (ships[i].hitShip(coord))
+		{
+			std::cout << "hit \n";
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool Fleet::fleetDestroyed()
+{
+	for (size_t i = 0; i < numberOfShips; i++)
+	{
+		if (ships[i].shipDestroyed() == false)
+		{
+			return false;
+		}
+	}
+
+	return true;
 }

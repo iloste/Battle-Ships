@@ -17,7 +17,7 @@ public:
 
 	static  const int colourValues[5];
 
-	static void printInColour(std::string message, Colour colour);
-
+	static void printInColour(std::string message, Colour colour = Colour::White);
+	static void ClearScreen();
 };
 

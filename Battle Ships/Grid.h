@@ -10,8 +10,10 @@ class Grid
 
 public:
 	Grid();
-	void DisplayGrid();
-
+	Grid(bool _autoPlaceShips, bool _aiControlled);
+	void displayGrid();
+	void takeShot(Coordinate _coord);
+	bool fleetDestroyed();
 
 private:
 	Fleet fleet;
@@ -19,9 +21,9 @@ private:
 	//to do: make a gridSize int to replace 10
 	char grid[gridSize][gridSize]{};
 
-	void InitialiseGrid();
-	void InitialiseWaterTiles();
-	void InitiaiseShipTiles();
+	void initialiseGrid(bool aiControlled);
+	void initialiseWaterTiles();
+	void initiaiseShipTiles();
 	Output::Colour getColour(char c);
 };
 

@@ -2,18 +2,18 @@
 
 
 Ship::Ship() {
-	size = 1;
+	shipSize = 1;
 	orientation = Orientation::Horizontal;
 	hits = new bool[1];
-	coordinates = getCoordinates(Coordinate(-1, -1), size);
+	coordinates = getCoordinates(Coordinate(-1, -1), shipSize);
 	placedOnBoard = false;
 }
 
-Ship::Ship(Coordinate origin, int size, Orientation orientation) {
-	this->size = size;
+Ship::Ship(Coordinate origin, int shipSize, Orientation orientation) {
+	this->shipSize = shipSize;
 	this->orientation = orientation;
-	hits = new bool[size]();
-	coordinates = getCoordinates(origin, size);
+	hits = new bool[shipSize]();
+	coordinates = getCoordinates(origin, shipSize);
 	placedOnBoard = true;
 }
 
@@ -22,6 +22,7 @@ bool Ship::hitShip(Coordinate location) {
 	{
 		if (coordinates[i] == location)
 		{
+			hits[i] = true;
 			return true;
 		}
 	}
@@ -51,6 +52,19 @@ std::vector<Coordinate> Ship::getCoordinates(Coordinate origin, int size) {
 	}
 
 	return coords;
+}
+
+bool Ship::shipDestroyed()
+{
+	for (size_t i = 0; i < shipSize; i++)
+	{
+		if (hits[i] == false)
+		{
+			return false;
+		}
+	}
+
+	return true;
 }
 
 void Ship::printCoords() {

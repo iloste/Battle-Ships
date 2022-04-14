@@ -6,21 +6,62 @@
 #include "Fleet.h"
 #include "Grid.h"
 #include <string>
+#include "Player.h"
+#include "AI.h"
+#include <ctime>
+
+Player* m_player;
+AI* m_AI;
+void initialiseGame();
+void gameLoop();
+void playersTurn();
+void AIsTurn();
+
 
 int main()
 {
-	Grid grid = Grid();
+	initialiseGame();
+	gameLoop();
+}
+
+void initialiseGame() {
+	std::srand(std::time(nullptr));
+
+	m_player = new Player();
+	m_AI = new AI();
+
+	m_player->setOpponent(m_AI);
+	m_AI->setOpponent(m_player);
+}
+
+void gameLoop() {
+	bool gameRunning = true;
+
+	while (gameRunning)
+	{
+#pragma region players turn
+		m_player->takeTurn();
+
+		if (m_AI->fleetDestroyed())
+		{
+			Output::printInColour("Player Won!", Output::Colour::Green);
+			gameRunning = false;
+			break;
+		}
+#pragma endregion
+
+#pragma region AIs turn
+		m_AI->takeTurn();
+
+		if (m_AI->fleetDestroyed())
+		{
+			Output::printInColour("Player Lost!", Output::Colour::Red);
+			gameRunning = false;
+			break;
+		}
+#pragma endregion
+
+	}
 }
 
 
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file

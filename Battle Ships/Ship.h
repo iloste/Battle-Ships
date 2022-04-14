@@ -23,7 +23,9 @@ public:
 	void printCoords();
 	std::vector<Coordinate> getCoordinates(Coordinate origin, int size);
 
-	int size{};
+	bool shipDestroyed();
+
+	int shipSize{};
 	Orientation orientation{};
 	std::vector<Coordinate> coordinates{};
 	bool* hits;

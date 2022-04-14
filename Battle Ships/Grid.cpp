@@ -4,18 +4,26 @@
 
 Grid::Grid() {
 	fleet = Fleet(true);
-	InitialiseGrid();
-	DisplayGrid();
+	initialiseGrid(true);
+}
+
+Grid::Grid(bool _autoPlaceShips, bool aiControlled) {
+	fleet = Fleet(_autoPlaceShips);
+	initialiseGrid(aiControlled);
 }
 
 
-void Grid::InitialiseGrid() {
-	InitialiseWaterTiles();
-	InitiaiseShipTiles();
+void Grid::initialiseGrid(bool aiControlled) {
+	initialiseWaterTiles();
+
+	if (!aiControlled)
+	{
+		initiaiseShipTiles();
+	}
 }
 
 
-void Grid::InitialiseWaterTiles() {
+void Grid::initialiseWaterTiles() {
 	for (size_t x = 0; x < gridSize; x++)
 	{
 		for (size_t y = 0; y < gridSize; y++)
@@ -25,7 +33,7 @@ void Grid::InitialiseWaterTiles() {
 	}
 }
 
-void Grid::InitiaiseShipTiles() {
+void Grid::initiaiseShipTiles() {
 	Ship* ships = fleet.getShips();
 
 	for (size_t i = 0; i < fleet.numberOfShips; i++)
@@ -38,7 +46,7 @@ void Grid::InitiaiseShipTiles() {
 	}
 }
 
-void Grid::DisplayGrid() {
+void Grid::displayGrid() {
 	Output::printInColour("  0 1 2 3 4 5 6 7 8 9\n", Output::Colour::White);
 
 	for (size_t x = 0; x < gridSize; x++)
@@ -76,5 +84,20 @@ Output::Colour Grid::getColour(char c) {
 	}
 
 	return colour;
+}
+
+
+void Grid::takeShot(Coordinate coord) {
+	if (fleet.hitShip(coord)) {
+		grid[coord.x][coord.y] = 'x';
+	}
+	else {
+		grid[coord.x][coord.y] = '@';
+	}
+}
+
+bool Grid::fleetDestroyed()
+{
+	return fleet.fleetDestroyed();
 }
 

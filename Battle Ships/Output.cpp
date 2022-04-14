@@ -9,3 +9,8 @@ void Output::printInColour(std::string message, Colour colour) {
 		std::cout << message;
 	}
 }
+
+void Output::ClearScreen()
+{
+	std::cout << "\x1B[2J\x1B[H";
+}
