@@ -2,6 +2,9 @@
 #include "Fleet.h"
 #include <iostream>
 #include "Output.h"
+//may not need this if the get key press is moved to input class
+#include <conio.h>
+
 
 class Grid
 {
@@ -18,8 +21,11 @@ public:
 private:
 	Fleet fleet;
 	static const int gridSize = 10;
-	//to do: make a gridSize int to replace 10
 	char grid[gridSize][gridSize]{};
+
+	Coordinate currentLocation{};
+	void moveLocation();
+
 
 	void initialiseGrid(bool aiControlled);
 	void initialiseWaterTiles();

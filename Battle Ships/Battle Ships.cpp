@@ -9,19 +9,65 @@
 #include "Player.h"
 #include "AI.h"
 #include <ctime>
+#include <conio.h>
 
 Player* m_player;
 AI* m_AI;
 void initialiseGame();
 void gameLoop();
-void playersTurn();
-void AIsTurn();
+
 
 
 int main()
 {
-	initialiseGame();
-	gameLoop();
+	while (true)
+	{
+		Input::KeyCode code = Input::getKeyFromPlayer();
+
+		switch (code)
+		{
+		case Input::KeyCode::W:
+			std::cout << "pressed W\n";
+			break;
+		case Input::KeyCode::A:
+			std::cout << "pressed A\n";
+			break;
+		case Input::KeyCode::S:
+			std::cout << "pressed S\n";
+			break;
+		case Input::KeyCode::D:
+			std::cout << "pressed D\n";
+			break;
+		case Input::KeyCode::Up:
+			std::cout << "pressed Up\n";
+			break;
+		case Input::KeyCode::Down:
+			std::cout << "pressed Down\n";
+			break;
+		case Input::KeyCode::Left:
+			std::cout << "pressed Left\n";
+			break;
+		case Input::KeyCode::Right:
+			std::cout << "pressed Right\n";
+			break;
+		case Input::KeyCode::Enter:
+			std::cout << "pressed Enter\n";
+			break;
+		case Input::KeyCode::Arrow:
+			std::cout << "Arrow Pressed, Ignore this press\n";
+			break;
+		case Input::KeyCode::Default:
+			std::cout << "Unrecognised Key\n";
+			break;
+		default:
+			break;
+		}
+	}
+
+
+	//initialiseGame();
+	//gameLoop();
+
 }
 
 void initialiseGame() {

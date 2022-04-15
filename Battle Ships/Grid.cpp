@@ -13,6 +13,11 @@ Grid::Grid(bool _autoPlaceShips, bool aiControlled) {
 }
 
 
+void Grid::moveLocation()
+{
+	int c = _getch();
+}
+
 void Grid::initialiseGrid(bool aiControlled) {
 	initialiseWaterTiles();
 
