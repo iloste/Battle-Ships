@@ -8,19 +8,19 @@ public:
 	static const int numberOfShips;
 
 	Fleet();
-	Fleet(bool autoPlaceShips);
+	//Fleet(bool autoPlaceShips);
 	Ship* getShips();
 	bool hitShip(Coordinate coord);
 	bool fleetDestroyed();
+	void manuallyPlaceShips();
+	void autoPlaceShips();
 
 private:
 	static const int shipSizes[5];
-	void placeShips();
 	Coordinate getCoordinateFromPlayer();
 	Ship::Orientation getOrientationFromPlayer();
 	bool collidesWithFleet(Ship ship);
 	bool collidesWithShip(Ship ship1, Ship ship2);
-	void autoPlaceShips();
 	Ship* ships;
 
 };

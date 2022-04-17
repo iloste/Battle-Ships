@@ -7,11 +7,8 @@ void AI::takeTurn()
 	fireAtOpponent();
 	updateScreen();
 
-	// to do: change this so it's a timer?
-	// enter for AI's turn
-	std::cout << "Press enter to continue\n";
-	std::string x;
-	std::cin >> x;
+	Output::printInColour("Press enter to continue\n");
+	Input::getKeyFromPlayer();
 }
 
 void AI::fireAtOpponent()
@@ -25,7 +22,7 @@ void AI::fireAtOpponent()
 void AI::updateScreen()
 {
 	Output::ClearScreen();
-	Output::printInColour("Opponent's turn\n");
+	Output::printInColour("Opponent's turn\n", Output::Colour::Red);
 	opponent->displayGrid();
 }
 

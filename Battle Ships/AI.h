@@ -1,6 +1,6 @@
 #pragma once
 #include "Agent.h"
-
+#include "Input.h"
 
 class AI : public Agent
 {

@@ -20,7 +20,7 @@ void gameLoop();
 
 int main()
 {
-	while (true)
+	/*while (true)
 	{
 		Input::KeyCode code = Input::getKeyFromPlayer();
 
@@ -62,11 +62,11 @@ int main()
 		default:
 			break;
 		}
-	}
+	}*/
 
 
-	//initialiseGame();
-	//gameLoop();
+	initialiseGame();
+	gameLoop();
 
 }
 

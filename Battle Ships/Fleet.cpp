@@ -6,21 +6,21 @@ const int Fleet::numberOfShips{ 5 };
 
 
 Fleet::Fleet() {
-	
-}
-
-Fleet::Fleet(bool _autoPlaceShips) {
 	ships = new Ship[5]();
-
-	// to do: give the player the option to autoplace ships too
-	if (_autoPlaceShips)
-	{
-		autoPlaceShips();
-	}
-	else {
-		placeShips();
-	}
 }
+
+//Fleet::Fleet(bool _autoPlaceShips) {
+//	ships = new Ship[5]();
+//
+//	// to do: give the player the option to autoplace ships too
+//	if (_autoPlaceShips)
+//	{
+//		autoPlaceShips();
+//	}
+//	else {
+//		placeShips();
+//	}
+//}
 
 Ship* Fleet::getShips() {
 	return ships;
@@ -45,7 +45,7 @@ void Fleet::autoPlaceShips() {
 
 }
 
-void Fleet::placeShips() {
+void Fleet::manuallyPlaceShips() {
 	int shipsPlaced = 0;
 
 	while (shipsPlaced < 5)

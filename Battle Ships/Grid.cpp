@@ -3,12 +3,22 @@
 //const int Grid::gridSize = 10;
 
 Grid::Grid() {
-	fleet = Fleet(true);
+	fleet = Fleet();
+	fleet.autoPlaceShips();
 	initialiseGrid(true);
 }
 
 Grid::Grid(bool _autoPlaceShips, bool aiControlled) {
-	fleet = Fleet(_autoPlaceShips);
+	// to do: remove autoplace ship 
+	fleet = Fleet();
+	if (_autoPlaceShips)
+	{
+		fleet.autoPlaceShips();
+	}
+	else {
+		fleet.manuallyPlaceShips();
+	}
+
 	initialiseGrid(aiControlled);
 }
 
@@ -25,6 +35,8 @@ void Grid::initialiseGrid(bool aiControlled) {
 	{
 		initiaiseShipTiles();
 	}
+
+	initiaiseEmptySpaceTiles();
 }
 
 
@@ -34,6 +46,17 @@ void Grid::initialiseWaterTiles() {
 		for (size_t y = 0; y < gridSize; y++)
 		{
 			grid[x][y] = '~';
+		}
+	}
+}
+
+
+void Grid::initiaiseEmptySpaceTiles() {
+	for (size_t x = 0; x < gridSize; x++)
+	{
+		for (size_t y = 0; y < gridSize; y++)
+		{
+			secondGrid[x][y] = ' ';
 		}
 	}
 }
@@ -52,7 +75,7 @@ void Grid::initiaiseShipTiles() {
 }
 
 void Grid::displayGrid() {
-	Output::printInColour("  0 1 2 3 4 5 6 7 8 9\n", Output::Colour::White);
+	Output::printInColour("   0 1 2 3 4 5 6 7 8 9\n", Output::Colour::White);
 
 	for (size_t x = 0; x < gridSize; x++)
 	{
@@ -60,12 +83,14 @@ void Grid::displayGrid() {
 
 		for (size_t y = 0; y < gridSize; y++)
 		{
-			Output::printInColour(std::string(1, grid[y][x]) + " " , getColour(grid[y][x]));
+			Output::printInColour(std::string(1, secondGrid[y][x]), getColour(secondGrid[y][x]));
+			Output::printInColour(std::string(1, grid[y][x]), getColour(grid[y][x]));
 		}
 
 		std::cout << "\n";
 	}
 }
+
 
 
 Output::Colour Grid::getColour(char c) {
@@ -83,12 +108,28 @@ Output::Colour Grid::getColour(char c) {
 	case 'x':
 		colour = Output::Colour::Red;
 		break;
+	case '|':
+	case '-':
+		colour = Output::Colour::Green;
+		break;
 	default:
 		colour = Output::Colour::White;
 		break;
 	}
 
 	return colour;
+}
+
+void Grid::setSelectedCoordinate(Coordinate _coord)
+{
+	initiaiseEmptySpaceTiles();
+	secondGrid[_coord.x][_coord.y] = '|';
+	secondGrid[_coord.x + 1][_coord.y] = '|';
+}
+
+void Grid::unselectAllCoordinates()
+{
+	initiaiseEmptySpaceTiles();
 }
 
 
@@ -104,5 +145,9 @@ void Grid::takeShot(Coordinate coord) {
 bool Grid::fleetDestroyed()
 {
 	return fleet.fleetDestroyed();
+}
+
+void Grid::placeShips()
+{
 }
 

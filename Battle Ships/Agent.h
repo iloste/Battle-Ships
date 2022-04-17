@@ -13,6 +13,8 @@ public:
 	virtual void takeShot(Coordinate coord);
 	virtual void displayGrid();
 	bool fleetDestroyed();
+	void setSelectedCoordinate(Coordinate _selectedCoordinate);
+	void unselectAllCoordinates();
 
 protected:
 	virtual void fireAtOpponent() = 0;

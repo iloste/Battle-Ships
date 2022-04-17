@@ -14,7 +14,21 @@ void Agent::displayGrid()
 	grid.displayGrid();
 }
 
+
+
+
+
 bool Agent::fleetDestroyed()
 {
 	return grid.fleetDestroyed();
+}
+
+void Agent::setSelectedCoordinate(Coordinate _selectedCoordinate)
+{
+	grid.setSelectedCoordinate(_selectedCoordinate);
+}
+
+void Agent::unselectAllCoordinates()
+{
+	grid.unselectAllCoordinates();
 }
