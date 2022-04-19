@@ -8,17 +8,9 @@ Grid::Grid() {
 	initialiseGrid(true);
 }
 
-Grid::Grid(bool _autoPlaceShips, bool aiControlled) {
+Grid::Grid(bool aiControlled) {
 	// to do: remove autoplace ship 
 	fleet = Fleet();
-	if (_autoPlaceShips)
-	{
-		fleet.autoPlaceShips();
-	}
-	else {
-		fleet.manuallyPlaceShips();
-	}
-
 	initialiseGrid(aiControlled);
 }
 
@@ -33,7 +25,7 @@ void Grid::initialiseGrid(bool aiControlled) {
 
 	if (!aiControlled)
 	{
-		initiaiseShipTiles();
+		initialiseShipTiles();
 	}
 
 	initiaiseEmptySpaceTiles();
@@ -61,10 +53,10 @@ void Grid::initiaiseEmptySpaceTiles() {
 	}
 }
 
-void Grid::initiaiseShipTiles() {
-	Ship* ships = fleet.getShips();
+void Grid::initialiseShipTiles() {
+	std::vector<Ship> ships = fleet.getShips();
 
-	for (size_t i = 0; i < fleet.numberOfShips; i++)
+	for (size_t i = 0; i < ships.size(); i++)
 	{
 		for (size_t j = 0; j < ships[i].coordinates.size(); j++)
 		{
@@ -120,6 +112,10 @@ Output::Colour Grid::getColour(char c) {
 	return colour;
 }
 
+
+
+
+
 void Grid::setSelectedCoordinate(Coordinate _coord)
 {
 	initiaiseEmptySpaceTiles();
@@ -147,7 +143,106 @@ bool Grid::fleetDestroyed()
 	return fleet.fleetDestroyed();
 }
 
-void Grid::placeShips()
+
+void Grid::updateShipPositionAndOrientation(Input::KeyCode keycode, Ship& ship)
 {
+	Coordinate coordinate = ship.coordinates[0];
+
+	switch (keycode)
+	{
+	case Input::KeyCode::Up:
+	case Input::KeyCode::W:
+		coordinate = coordinate + Coordinate::down();
+		break;
+	case Input::KeyCode::Left:
+	case Input::KeyCode::A:
+		coordinate = coordinate + Coordinate::left();
+		break;
+	case Input::KeyCode::Down:
+	case Input::KeyCode::S:
+		coordinate = coordinate + Coordinate::up();
+		break;
+	case Input::KeyCode::Right:
+	case Input::KeyCode::D:
+		coordinate = coordinate + Coordinate::right();
+		break;
+	case Input::KeyCode::Enter:
+		break;
+	case Input::KeyCode::R:
+		ship.rotate();
+		break;
+	case Input::KeyCode::Arrow:
+		break;
+	case Input::KeyCode::Default:
+		break;
+	default:
+		break;
+	}
+
+	ship.resetCoordinates(coordinate);
+}
+
+void Grid::showShipOnGrid(Ship& ship)
+{
+	for (size_t i = 0; i < ship.coordinates.size(); i++)
+	{
+		grid[ship.coordinates[i].x][ship.coordinates[i].y] = 'o';
+	}
+}
+
+
+void Grid::manuallyPlaceShips()
+{
+	int shipsToPlace = 5;
+	int shipsPlaced = 0;
+	bool placingShip = true;
+	int shipSizes[5] = { 5, 4, 3, 3, 2 };
+	Ship newShip = Ship(Coordinate(0, 0), shipSizes[shipsPlaced], Ship::Orientation::Horizontal);
+	Input::KeyCode keycode;
+	std::string errorMessage = "";
+
+	while (shipsPlaced < shipsToPlace)
+	{
+		setSelectedCoordinate(newShip.coordinates[0]);
+		initialiseWaterTiles();
+		initialiseShipTiles();
+		showShipOnGrid(newShip);
+		Output::ClearScreen();
+		Output::printInColour("Place your ships\n", Output::Colour::Green);
+		displayGrid();
+
+		#pragma region Print Controls
+		Output::printInColour("Press");
+		Output::printInColour(" Enter ", Output::Colour::Green);
+		Output::printInColour("to place ship\n");
+		Output::printInColour("Press");
+		Output::printInColour(" R ", Output::Colour::Green);
+		Output::printInColour("to rotate ship\n");
+		#pragma endregion
+		Output::printInColour(errorMessage, Output::Colour::Red);
+
+		keycode = Input::getKeyFromPlayer();
+		errorMessage = "";
+		updateShipPositionAndOrientation(keycode, newShip);
+
+		if (keycode == Input::KeyCode::Enter)
+		{
+			if (!fleet.shipCollidesWithFleet(newShip))
+			{
+				fleet.addShip(newShip);
+				shipsPlaced++;
+
+				if (shipsPlaced < shipsToPlace)
+				{
+					newShip = Ship(Coordinate(0, 0), shipSizes[shipsPlaced], Ship::Orientation::Horizontal);
+				}
+			}
+			else {
+				errorMessage = "Invalid location, try again\n";
+			}
+		}
+	}
+
+	unselectAllCoordinates();
 }
 

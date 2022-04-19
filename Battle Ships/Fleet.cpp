@@ -2,27 +2,15 @@
 
 
 const int Fleet::shipSizes[5]{ 5, 4, 3, 3, 2 };
-const int Fleet::numberOfShips{ 5 };
 
 
 Fleet::Fleet() {
-	ships = new Ship[5]();
+	//ships = new Ship[5]();
+	ships = std::vector<Ship>();
 }
 
-//Fleet::Fleet(bool _autoPlaceShips) {
-//	ships = new Ship[5]();
-//
-//	// to do: give the player the option to autoplace ships too
-//	if (_autoPlaceShips)
-//	{
-//		autoPlaceShips();
-//	}
-//	else {
-//		placeShips();
-//	}
-//}
 
-Ship* Fleet::getShips() {
+std::vector<Ship> Fleet::getShips() {
 	return ships;
 }
 
@@ -36,13 +24,19 @@ void Fleet::autoPlaceShips() {
 		Ship::Orientation orientation = Ship::Orientation::Vertical;
 		Ship newShip = Ship(origin, shipSizes[shipsPlaced], orientation);
 
-		if (!collidesWithFleet(newShip))
+		if (!shipCollidesWithFleet(newShip))
 		{
-			ships[shipsPlaced] = newShip;
+			ships.push_back(newShip);
 			shipsPlaced++;
 		}
 	}
 
+}
+
+void Fleet::addShip(Ship& newShip)
+{
+	// to do: check ship isn't null
+	ships.push_back(newShip);
 }
 
 void Fleet::manuallyPlaceShips() {
@@ -54,9 +48,9 @@ void Fleet::manuallyPlaceShips() {
 		Ship::Orientation orientation = getOrientationFromPlayer();
 		Ship newShip = Ship(origin, shipSizes[shipsPlaced], orientation);
 
-		if (!collidesWithFleet(newShip))
+		if (!shipCollidesWithFleet(newShip))
 		{
-			ships[shipsPlaced] = newShip;
+			ships.push_back(newShip);
 			shipsPlaced++;
 		}
 		else {
@@ -94,11 +88,11 @@ Ship::Orientation Fleet::getOrientationFromPlayer() {
 }
 
 
-bool Fleet::collidesWithFleet(Ship ship) {
+bool Fleet::shipCollidesWithFleet(Ship& ship) {
 
-	for (size_t i = 0; i < numberOfShips; i++)
+	for (size_t i = 0; i < ships.size(); i++)
 	{
-		if (collidesWithShip(ship, ships[i]))
+		if (ships[i].collidesWith(ship))
 		{
 			return true;
 		}
@@ -108,29 +102,11 @@ bool Fleet::collidesWithFleet(Ship ship) {
 }
 
 
-bool Fleet::collidesWithShip(Ship ship1, Ship ship2) {
-	if (!ship1.placedOnBoard || !ship2.placedOnBoard)
-	{
-		return false;
-	}
 
-	for (size_t i = 0; i < ship1.coordinates.size(); i++)
-	{
-		for (size_t j = 0; j < ship2.coordinates.size(); j++)
-		{
-			if (ship1.coordinates[i] == ship2.coordinates[j])
-			{
-				return true;
-			}
-		}
-	}
-
-	return false;
-}
 
 
 bool Fleet::hitShip(Coordinate coord) {
-	for (size_t i = 0; i < numberOfShips; i++)
+	for (size_t i = 0; i < ships.size(); i++)
 	{
 		if (ships[i].hitShip(coord))
 		{
@@ -144,9 +120,9 @@ bool Fleet::hitShip(Coordinate coord) {
 
 bool Fleet::fleetDestroyed()
 {
-	for (size_t i = 0; i < numberOfShips; i++)
+	for (size_t i = 0; i < ships.size(); i++)
 	{
-		if (ships[i].shipDestroyed() == false)
+		if (ships[i].isDestroyed() == false)
 		{
 			return false;
 		}

@@ -5,7 +5,7 @@ Ship::Ship() {
 	shipSize = 1;
 	orientation = Orientation::Horizontal;
 	hits = new bool[1];
-	coordinates = getCoordinates(Coordinate(-1, -1), shipSize);
+	coordinates = getCoordinates(Coordinate(-1, -1));
 	placedOnBoard = false;
 }
 
@@ -13,7 +13,7 @@ Ship::Ship(Coordinate origin, int shipSize, Orientation orientation) {
 	this->shipSize = shipSize;
 	this->orientation = orientation;
 	hits = new bool[shipSize]();
-	coordinates = getCoordinates(origin, shipSize);
+	coordinates = getCoordinates(origin);
 	placedOnBoard = true;
 }
 
@@ -30,7 +30,7 @@ bool Ship::hitShip(Coordinate location) {
 	return false;
 }
 
-std::vector<Coordinate> Ship::getCoordinates(Coordinate origin, int size) {
+std::vector<Coordinate> Ship::getCoordinates(Coordinate origin) {
 	std::vector<Coordinate> coords{};
 	Coordinate nextCoord = origin;
 	Coordinate directionCoord;
@@ -45,7 +45,7 @@ std::vector<Coordinate> Ship::getCoordinates(Coordinate origin, int size) {
 	}
 
 
-	for (size_t i = 0; i < size; i++)
+	for (size_t i = 0; i < shipSize; i++)
 	{
 		coords.push_back(nextCoord);
 		nextCoord = nextCoord + directionCoord;
@@ -54,7 +54,7 @@ std::vector<Coordinate> Ship::getCoordinates(Coordinate origin, int size) {
 	return coords;
 }
 
-bool Ship::shipDestroyed()
+bool Ship::isDestroyed()
 {
 	for (size_t i = 0; i < shipSize; i++)
 	{
@@ -65,6 +65,43 @@ bool Ship::shipDestroyed()
 	}
 
 	return true;
+}
+
+bool Ship::collidesWith(Ship& ship)
+{
+	if (!this->placedOnBoard || !ship.placedOnBoard)
+	{
+		return false;
+	}
+
+	for (size_t i = 0; i < this->coordinates.size(); i++)
+	{
+		for (size_t j = 0; j < ship.coordinates.size(); j++)
+		{
+			if (this->coordinates[i] == ship.coordinates[j])
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+void Ship::resetCoordinates(Coordinate newOrigin)
+{
+	coordinates = getCoordinates(newOrigin);
+}
+
+void Ship::rotate()
+{
+	if (orientation == Orientation::Horizontal)
+	{
+		orientation = Orientation::Vertical;
+	}
+	else {
+		orientation = Orientation::Horizontal;
+	}
 }
 
 void Ship::printCoords() {

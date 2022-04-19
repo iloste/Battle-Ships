@@ -1,6 +1,6 @@
 #include "Input.h"
 
-const int Input::KeyCodeValues[9]{119, 97, 115, 100, 72, 80, 75, 77, 13};
+const int Input::KeyCodeValues[10]{ 119, 97, 115, 100, 72, 80, 75,  77, 13, 114};
 
 Coordinate Input::getCoordinateFromPlayer() {
 	Output::printInColour("Enter the x coordinate\n", Output::Colour::White);
@@ -26,7 +26,7 @@ Input::KeyCode Input::getKeyFromPlayer()
 
 	KeyCode keyCode = KeyCode::Default;
 
-	for (size_t i = 0; i < sizeof(KeyCodeValues)/sizeof(KeyCodeValues[0]); i++)
+	for (size_t i = 0; i < sizeof(KeyCodeValues) / sizeof(KeyCodeValues[0]); i++)
 	{
 		if (KeyCodeValues[i] == c)
 		{

@@ -19,6 +19,7 @@ public:
 		Left, 
 		Right,
 		Enter,
+		R,
 
 		Arrow,
 		// leave default as the last element
@@ -30,6 +31,6 @@ public:
 	static KeyCode getKeyFromPlayer();
 
 private:
-	static const int KeyCodeValues[9];
+	static const int KeyCodeValues[10];
 };
 

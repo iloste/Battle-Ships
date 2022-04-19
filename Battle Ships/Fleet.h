@@ -5,23 +5,22 @@
 class Fleet
 {
 public:
-	static const int numberOfShips;
+	//static const int numberOfShips;
 
 	Fleet();
 	//Fleet(bool autoPlaceShips);
-	Ship* getShips();
+	std::vector<Ship>  getShips();
 	bool hitShip(Coordinate coord);
 	bool fleetDestroyed();
 	void manuallyPlaceShips();
 	void autoPlaceShips();
+	void addShip(Ship& newShip);
+	bool shipCollidesWithFleet(Ship& ship);
 
 private:
 	static const int shipSizes[5];
 	Coordinate getCoordinateFromPlayer();
 	Ship::Orientation getOrientationFromPlayer();
-	bool collidesWithFleet(Ship ship);
-	bool collidesWithShip(Ship ship1, Ship ship2);
-	Ship* ships;
-
+	std::vector<Ship> ships{};
 };
 

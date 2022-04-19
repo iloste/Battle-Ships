@@ -2,7 +2,8 @@
 
 Player::Player() {
 	// to do: set this to false so player can place ships
-	grid = Grid(true, false);
+	grid = Grid(false);
+	grid.manuallyPlaceShips();
 }
 
 void Player::takeTurn()
