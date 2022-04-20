@@ -113,9 +113,6 @@ Output::Colour Grid::getColour(char c) {
 }
 
 
-
-
-
 void Grid::setSelectedCoordinate(Coordinate _coord)
 {
 	initiaiseEmptySpaceTiles();
@@ -126,6 +123,22 @@ void Grid::setSelectedCoordinate(Coordinate _coord)
 void Grid::unselectAllCoordinates()
 {
 	initiaiseEmptySpaceTiles();
+}
+
+char Grid::getCell(Coordinate _coord)
+{
+	//TODO make sure coord is within grid. Make it a function
+	return grid[_coord.x][_coord.y];
+}
+
+bool Grid::isCoordinateWithinBounds(Coordinate _coord)
+{
+	if (_coord.x < 0 || _coord.y < 0 || _coord.x >= gridSize || _coord.y >= gridSize)
+	{
+		return false;
+	}
+
+	return true;
 }
 
 
@@ -194,6 +207,25 @@ void Grid::updateShipPositionAndOrientation(Input::KeyCode keycode, Ship& ship)
 	}
 }
 
+Coordinate Grid::getRandomCoordinateForShip(int shipSize, Ship::Orientation orientation)
+{
+	int maxX = gridSize;
+	int maxY = gridSize;
+
+	if (orientation == Ship::Orientation::Horizontal)
+	{
+		maxX -= shipSize;
+	}
+	else {
+		maxY -= shipSize;
+	}
+
+	int x = rand() % maxX;
+	int y = rand() % maxY;
+
+	return Coordinate(x, y);
+}
+
 void Grid::showShipOnGrid(Ship& ship)
 {
 	for (size_t i = 0; i < ship.coordinates.size(); i++)
@@ -206,13 +238,13 @@ bool Grid::shipWouldBeWithinConfinesOfGrid(Ship& ship, Coordinate movement)
 {
 	//check start of ship
 	Coordinate newStartPosition = ship.coordinates[0] + movement;
-	if (newStartPosition.x < 0 || newStartPosition.y < 0)
+	if (!isCoordinateWithinBounds(newStartPosition))
 	{
 		return false;
 	}
 	//check end of ship
 	Coordinate newEndPosition = ship.coordinates[ship.shipSize - 1] + movement;
-	if (newEndPosition.x >= gridSize || newEndPosition.y >= gridSize)
+	if (!isCoordinateWithinBounds(newEndPosition))
 	{
 		return false;
 	}
@@ -277,58 +309,34 @@ void Grid::manuallyPlaceShips()
 	unselectAllCoordinates();
 }
 
+
 void Grid::autoPlaceShips()
 {
 	int shipsToPlace = 5;
 	int shipsPlaced = 0;
 	bool placingShip = true;
 	int shipSizes[5] = { 5, 4, 3, 3, 2 };
-	Ship newShip = Ship(Coordinate(0, 0), shipSizes[shipsPlaced], Ship::Orientation::Horizontal);
-	Input::KeyCode keycode;
-	std::string errorMessage = "";
 
 	while (shipsPlaced < shipsToPlace)
 	{
-		setSelectedCoordinate(newShip.coordinates[0]);
-		initialiseWaterTiles();
-		initialiseShipTiles();
-		showShipOnGrid(newShip);
-		Output::ClearScreen();
-		Output::printInColour("Place your ships\n", Output::Colour::Green);
-		displayGrid();
+		Ship::Orientation orientation;
 
-#pragma region Print Controls
-		Output::printInColour("Press");
-		Output::printInColour(" Enter ", Output::Colour::Green);
-		Output::printInColour("to place ship\n");
-		Output::printInColour("Press");
-		Output::printInColour(" R ", Output::Colour::Green);
-		Output::printInColour("to rotate ship\n");
-#pragma endregion
-		Output::printInColour(errorMessage, Output::Colour::Red);
-
-		keycode = Input::getKeyFromPlayer();
-		errorMessage = "";
-		updateShipPositionAndOrientation(keycode, newShip);
-
-		if (keycode == Input::KeyCode::Enter)
+		if (rand() % 2 == 1)
 		{
-			if (!fleet.shipCollidesWithFleet(newShip))
-			{
-				fleet.addShip(newShip);
-				shipsPlaced++;
+			orientation = Ship::Orientation::Horizontal;
+		}
+		else {
+			orientation = Ship::Orientation::Vertical;
+		}
 
-				if (shipsPlaced < shipsToPlace)
-				{
-					newShip = Ship(Coordinate(0, 0), shipSizes[shipsPlaced], Ship::Orientation::Horizontal);
-				}
-			}
-			else {
-				errorMessage = "Invalid location, try again\n";
-			}
+		Coordinate origin = getRandomCoordinateForShip(shipSizes[shipsPlaced], orientation);
+		Ship ship = Ship(origin, shipSizes[shipsPlaced], orientation);
+
+		if (!fleet.shipCollidesWithFleet(ship))
+		{
+			fleet.addShip(ship);
+			shipsPlaced++;
 		}
 	}
-
-	unselectAllCoordinates();
 }
 

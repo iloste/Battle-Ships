@@ -18,7 +18,8 @@ public:
 	void autoPlaceShips();
 	void setSelectedCoordinate(Coordinate _coord);
 	void unselectAllCoordinates();
-
+	char getCell(Coordinate _coord);
+	bool isCoordinateWithinBounds(Coordinate _coord);
 
 private:
 	Fleet fleet;
@@ -37,8 +38,8 @@ private:
 	Output::Colour getColour(char c);
 	void showShipOnGrid(Ship& ship);
 	bool shipWouldBeWithinConfinesOfGrid(Ship& ship, Coordinate newPosition);
-	bool shipWouldBeWithinConfinesOfGrid(Ship& ship, Ship::Orientation newOrientation);
 
 	void updateShipPositionAndOrientation(Input::KeyCode keycode, Ship& ship);
+	Coordinate getRandomCoordinateForShip(int shipSize, Ship::Orientation orientation);
 };
 

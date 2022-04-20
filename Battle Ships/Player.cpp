@@ -14,13 +14,6 @@ void Player::takeTurn()
 
 	Output::printInColour("Press enter to continue\n");
 	Input::getKeyFromPlayer();
-
-	//// to do: change this so it's a timer?
-	//// enter for AI's turn
-	//std::string x;
-	//std::cin >> x;
-
-
 }
 
 void Player::fireAtOpponent()
@@ -31,6 +24,7 @@ void Player::fireAtOpponent()
 
 Coordinate Player::getCoordinateFromPlayer()
 {
+	//TODO: make sure you can't leave grid when firing
 	Coordinate selectedCoordinate = Coordinate(0, 0);
 	opponent->setSelectedCoordinate(selectedCoordinate);
 	updateScreen();
