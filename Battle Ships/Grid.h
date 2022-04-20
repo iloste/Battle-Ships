@@ -15,6 +15,7 @@ public:
 	void takeShot(Coordinate _coord);
 	bool fleetDestroyed();
 	void manuallyPlaceShips();
+	void autoPlaceShips();
 	void setSelectedCoordinate(Coordinate _coord);
 	void unselectAllCoordinates();
 
@@ -35,7 +36,8 @@ private:
 	void initiaiseEmptySpaceTiles();
 	Output::Colour getColour(char c);
 	void showShipOnGrid(Ship& ship);
-
+	bool shipWouldBeWithinConfinesOfGrid(Ship& ship, Coordinate newPosition);
+	bool shipWouldBeWithinConfinesOfGrid(Ship& ship, Ship::Orientation newOrientation);
 
 	void updateShipPositionAndOrientation(Input::KeyCode keycode, Ship& ship);
 };

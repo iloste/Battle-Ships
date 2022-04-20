@@ -15,21 +15,21 @@ std::vector<Ship> Fleet::getShips() {
 }
 
 void Fleet::autoPlaceShips() {
-	int shipsPlaced = 0;
+	//int shipsPlaced = 0;
 
-	while (shipsPlaced < 5)
-	{
-		// to do: randomise origin and orientation
-		Coordinate origin = Coordinate(shipsPlaced, 0);
-		Ship::Orientation orientation = Ship::Orientation::Vertical;
-		Ship newShip = Ship(origin, shipSizes[shipsPlaced], orientation);
+	//while (shipsPlaced < 5)
+	//{
+	//	// to do: randomise origin and orientation
+	//	Coordinate origin = Coordinate(shipsPlaced, 0);
+	//	Ship::Orientation orientation = Ship::Orientation::Vertical;
+	//	Ship newShip = Ship(origin, shipSizes[shipsPlaced], orientation);
 
-		if (!shipCollidesWithFleet(newShip))
-		{
-			ships.push_back(newShip);
-			shipsPlaced++;
-		}
-	}
+	//	if (!shipCollidesWithFleet(newShip))
+	//	{
+	//		ships.push_back(newShip);
+	//		shipsPlaced++;
+	//	}
+	//}
 
 }
 

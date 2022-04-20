@@ -4,7 +4,7 @@
 
 Grid::Grid() {
 	fleet = Fleet();
-	fleet.autoPlaceShips();
+	//fleet.autoPlaceShips();
 	initialiseGrid(true);
 }
 
@@ -146,30 +146,38 @@ bool Grid::fleetDestroyed()
 
 void Grid::updateShipPositionAndOrientation(Input::KeyCode keycode, Ship& ship)
 {
-	Coordinate coordinate = ship.coordinates[0];
+	Coordinate movement = Coordinate(0, 0);
 
 	switch (keycode)
 	{
 	case Input::KeyCode::Up:
 	case Input::KeyCode::W:
-		coordinate = coordinate + Coordinate::down();
+		movement = Coordinate::down();
 		break;
 	case Input::KeyCode::Left:
 	case Input::KeyCode::A:
-		coordinate = coordinate + Coordinate::left();
+		movement = Coordinate::left();
 		break;
 	case Input::KeyCode::Down:
 	case Input::KeyCode::S:
-		coordinate = coordinate + Coordinate::up();
+		movement = Coordinate::up();
 		break;
 	case Input::KeyCode::Right:
 	case Input::KeyCode::D:
-		coordinate = coordinate + Coordinate::right();
+		movement = Coordinate::right();
 		break;
 	case Input::KeyCode::Enter:
 		break;
 	case Input::KeyCode::R:
+		//TODO: do this rotation better. Maybe work out what the coords would be rather than rotating the ship and then rerotating the ship again.
 		ship.rotate();
+		ship.resetCoordinates(ship.coordinates[0]);
+
+		if (!shipWouldBeWithinConfinesOfGrid(ship, Coordinate(0, 0)))
+		{
+			ship.rotate();
+			ship.resetCoordinates(ship.coordinates[0]);
+		}
 		break;
 	case Input::KeyCode::Arrow:
 		break;
@@ -179,7 +187,11 @@ void Grid::updateShipPositionAndOrientation(Input::KeyCode keycode, Ship& ship)
 		break;
 	}
 
-	ship.resetCoordinates(coordinate);
+	if (shipWouldBeWithinConfinesOfGrid(ship, movement))
+	{
+		Coordinate newPosition = ship.coordinates[0] + movement;
+		ship.resetCoordinates(newPosition);
+	}
 }
 
 void Grid::showShipOnGrid(Ship& ship)
@@ -190,8 +202,82 @@ void Grid::showShipOnGrid(Ship& ship)
 	}
 }
 
+bool Grid::shipWouldBeWithinConfinesOfGrid(Ship& ship, Coordinate movement)
+{
+	//check start of ship
+	Coordinate newStartPosition = ship.coordinates[0] + movement;
+	if (newStartPosition.x < 0 || newStartPosition.y < 0)
+	{
+		return false;
+	}
+	//check end of ship
+	Coordinate newEndPosition = ship.coordinates[ship.shipSize - 1] + movement;
+	if (newEndPosition.x >= gridSize || newEndPosition.y >= gridSize)
+	{
+		return false;
+	}
+
+	return true;
+}
+
 
 void Grid::manuallyPlaceShips()
+{
+	// to do: make sure the ship can't be placed off grid
+	int shipsToPlace = 5;
+	int shipsPlaced = 0;
+	bool placingShip = true;
+	int shipSizes[5] = { 5, 4, 3, 3, 2 };
+	Ship newShip = Ship(Coordinate(0, 0), shipSizes[shipsPlaced], Ship::Orientation::Horizontal);
+	Input::KeyCode keycode;
+	std::string errorMessage = "";
+
+	while (shipsPlaced < shipsToPlace)
+	{
+		setSelectedCoordinate(newShip.coordinates[0]);
+		initialiseWaterTiles();
+		initialiseShipTiles();
+		showShipOnGrid(newShip);
+		Output::ClearScreen();
+		Output::printInColour("Place your ships\n", Output::Colour::Green);
+		displayGrid();
+
+#pragma region Print Controls
+		Output::printInColour("Press");
+		Output::printInColour(" Enter ", Output::Colour::Green);
+		Output::printInColour("to place ship\n");
+		Output::printInColour("Press");
+		Output::printInColour(" R ", Output::Colour::Green);
+		Output::printInColour("to rotate ship\n");
+#pragma endregion
+		Output::printInColour(errorMessage, Output::Colour::Red);
+
+		keycode = Input::getKeyFromPlayer();
+		errorMessage = "";
+		updateShipPositionAndOrientation(keycode, newShip);
+
+		if (keycode == Input::KeyCode::Enter)
+		{
+			if (!fleet.shipCollidesWithFleet(newShip))
+			{
+				fleet.addShip(newShip);
+				shipsPlaced++;
+
+				if (shipsPlaced < shipsToPlace)
+				{
+					newShip = Ship(Coordinate(0, 0), shipSizes[shipsPlaced], Ship::Orientation::Horizontal);
+				}
+			}
+			else {
+				errorMessage = "Invalid location, try again\n";
+			}
+		}
+	}
+
+	unselectAllCoordinates();
+}
+
+void Grid::autoPlaceShips()
 {
 	int shipsToPlace = 5;
 	int shipsPlaced = 0;
@@ -211,14 +297,14 @@ void Grid::manuallyPlaceShips()
 		Output::printInColour("Place your ships\n", Output::Colour::Green);
 		displayGrid();
 
-		#pragma region Print Controls
+#pragma region Print Controls
 		Output::printInColour("Press");
 		Output::printInColour(" Enter ", Output::Colour::Green);
 		Output::printInColour("to place ship\n");
 		Output::printInColour("Press");
 		Output::printInColour(" R ", Output::Colour::Green);
 		Output::printInColour("to rotate ship\n");
-		#pragma endregion
+#pragma endregion
 		Output::printInColour(errorMessage, Output::Colour::Red);
 
 		keycode = Input::getKeyFromPlayer();
