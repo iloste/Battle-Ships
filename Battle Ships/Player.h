@@ -15,5 +15,6 @@ protected:
 private:
 	Coordinate getCoordinateFromPlayer();
 	virtual void updateScreen() override;
+	void printControls();
 };
 

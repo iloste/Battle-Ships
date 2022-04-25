@@ -289,6 +289,9 @@ void Grid::manuallyPlaceShips()
 		Output::print("Press");
 		Output::print(" R ", Output::Colour::Green);
 		Output::print("to rotate ship\n");
+		Output::print("Press");
+		Output::print(" WASD/Arrow keys ", Output::Colour::Green);
+		Output::print("to move\n");
 #pragma endregion
 		Output::print(errorMessage, Output::Colour::Red);
 

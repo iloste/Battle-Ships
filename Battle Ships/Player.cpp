@@ -101,4 +101,16 @@ void Player::updateScreen()
 	Output::ClearScreen();
 	Output::print("Player's turn\n", Output::Colour::Green);
 	m_opponent->displayGrid();
+	printControls();
+}
+
+
+void Player::printControls()
+{
+	Output::print("Press");
+	Output::print(" Enter ", Output::Colour::Green);
+	Output::print("to fire\n");
+	Output::print("Press");
+	Output::print(" WASD/Arrow keys ", Output::Colour::Green);
+	Output::print("to move\n");
 }
