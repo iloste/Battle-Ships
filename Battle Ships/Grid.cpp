@@ -4,14 +4,13 @@
 
 Grid::Grid() {
 	fleet = Fleet();
-	//fleet.autoPlaceShips();
-	initialiseGrid(true);
+	bool showShipsOnGrid = true;
+	initialiseGrid(showShipsOnGrid);
 }
 
-Grid::Grid(bool aiControlled) {
-	// to do: remove autoplace ship 
+Grid::Grid(bool showShipsOnGrid) {
 	fleet = Fleet();
-	initialiseGrid(aiControlled);
+	initialiseGrid(showShipsOnGrid);
 }
 
 
@@ -20,10 +19,10 @@ void Grid::moveLocation()
 	int c = _getch();
 }
 
-void Grid::initialiseGrid(bool aiControlled) {
+void Grid::initialiseGrid(bool showShipsOnGrid) {
 	initialiseWaterTiles();
 
-	if (!aiControlled)
+	if (showShipsOnGrid)
 	{
 		initialiseShipTiles();
 	}
@@ -261,7 +260,6 @@ bool Grid::shipWouldBeWithinConfinesOfGrid(Ship& ship, Coordinate movement)
 
 void Grid::manuallyPlaceShips()
 {
-	// to do: make sure the ship can't be placed off grid
 	int shipsToPlace = 5;
 	int shipsPlaced = 0;
 	bool placingShip = true;

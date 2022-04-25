@@ -1,7 +1,8 @@
 #include "Player.h"
 
 Player::Player() {
-	grid = Grid(false);
+	bool showShipsOnGrid = true;
+	grid = Grid(showShipsOnGrid);
 	grid.manuallyPlaceShips();
 }
 

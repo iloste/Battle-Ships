@@ -5,7 +5,8 @@
 
 AI::AI()
 {
-	grid = Grid(true);
+	bool showShipsOnGrid = false;
+	grid = Grid(showShipsOnGrid);
 	grid.autoPlaceShips();
 }
 
