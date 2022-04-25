@@ -2,27 +2,29 @@
 
 
 Ship::Ship() {
-	shipSize = 1;
-	orientation = Orientation::Horizontal;
-	hits = new bool[1];
-	coordinates = getCoordinates(Coordinate(-1, -1));
-	placedOnBoard = false;
+	m_shipSize = 1;
+	m_orientation = Orientation::Horizontal;
+	m_hitsTaken = new bool[1];
+	m_coordinates = calculateCoordinatesOfShip(Coordinate(-1, -1));
+	m_placedOnGrid = false;
 }
 
-Ship::Ship(Coordinate origin, int shipSize, Orientation orientation) {
-	this->shipSize = shipSize;
-	this->orientation = orientation;
-	hits = new bool[shipSize]();
-	coordinates = getCoordinates(origin);
-	placedOnBoard = true;
+
+Ship::Ship(Coordinate _origin, int _shipSize, Orientation _orientation) {
+	this->m_shipSize = _shipSize;
+	this->m_orientation = _orientation;
+	m_hitsTaken = new bool[_shipSize]();
+	m_coordinates = calculateCoordinatesOfShip(_origin);
+	m_placedOnGrid = true;
 }
 
-bool Ship::hitShip(Coordinate location) {
-	for (size_t i = 0; i < coordinates.size(); i++)
+
+bool Ship::containsCoordinate(Coordinate _coordinate) {
+	for (size_t i = 0; i < m_coordinates.size(); i++)
 	{
-		if (coordinates[i] == location)
+		if (m_coordinates[i] == _coordinate)
 		{
-			hits[i] = true;
+			m_hitsTaken[i] = true;
 			return true;
 		}
 	}
@@ -30,12 +32,12 @@ bool Ship::hitShip(Coordinate location) {
 	return false;
 }
 
-std::vector<Coordinate> Ship::getCoordinates(Coordinate origin) {
+std::vector<Coordinate> Ship::calculateCoordinatesOfShip(Coordinate _origin) {
 	std::vector<Coordinate> coords{};
-	Coordinate nextCoord = origin;
+	Coordinate nextCoord = _origin;
 	Coordinate directionCoord;
 	
-	if (orientation == Orientation::Horizontal)
+	if (m_orientation == Orientation::Horizontal)
 	{
 		directionCoord = Coordinate(1, 0);
 	}
@@ -44,8 +46,7 @@ std::vector<Coordinate> Ship::getCoordinates(Coordinate origin) {
 		directionCoord = Coordinate(0, 1);
 	}
 
-
-	for (size_t i = 0; i < shipSize; i++)
+	for (size_t i = 0; i < m_shipSize; i++)
 	{
 		coords.push_back(nextCoord);
 		nextCoord = nextCoord + directionCoord;
@@ -54,11 +55,12 @@ std::vector<Coordinate> Ship::getCoordinates(Coordinate origin) {
 	return coords;
 }
 
+
 bool Ship::isDestroyed()
 {
-	for (size_t i = 0; i < shipSize; i++)
+	for (size_t i = 0; i < m_shipSize; i++)
 	{
-		if (hits[i] == false)
+		if (m_hitsTaken[i] == false)
 		{
 			return false;
 		}
@@ -67,18 +69,19 @@ bool Ship::isDestroyed()
 	return true;
 }
 
-bool Ship::collidesWith(Ship& ship)
+
+bool Ship::collidesWith(Ship& _ship)
 {
-	if (!this->placedOnBoard || !ship.placedOnBoard)
+	if (!this->m_placedOnGrid || !_ship.m_placedOnGrid)
 	{
 		return false;
 	}
 
-	for (size_t i = 0; i < this->coordinates.size(); i++)
+	for (size_t i = 0; i < this->m_coordinates.size(); i++)
 	{
-		for (size_t j = 0; j < ship.coordinates.size(); j++)
+		for (size_t j = 0; j < _ship.m_coordinates.size(); j++)
 		{
-			if (this->coordinates[i] == ship.coordinates[j])
+			if (this->m_coordinates[i] == _ship.m_coordinates[j])
 			{
 				return true;
 			}
@@ -88,30 +91,33 @@ bool Ship::collidesWith(Ship& ship)
 	return false;
 }
 
-void Ship::resetCoordinates(Coordinate newOrigin)
+
+void Ship::resetCoordinates(Coordinate _newOrigin)
 {
-	coordinates = getCoordinates(newOrigin);
+	m_coordinates = calculateCoordinatesOfShip(_newOrigin);
 }
+
 
 void Ship::rotate()
 {
-	if (orientation == Orientation::Horizontal)
+	if (m_orientation == Orientation::Horizontal)
 	{
-		orientation = Orientation::Vertical;
+		m_orientation = Orientation::Vertical;
 	}
 	else {
-		orientation = Orientation::Horizontal;
+		m_orientation = Orientation::Horizontal;
 	}
 }
+
 
 void Ship::printCoords() {
 	std::cout << "Ships coordinates: ";
 
-	for (size_t i = 0; i < coordinates.size(); i++)
+	for (size_t i = 0; i < m_coordinates.size(); i++)
 	{
-		std::cout << "(" << coordinates[i].x << ", " << coordinates[i].y << ")";
+		std::cout << "(" << m_coordinates[i].x << ", " << m_coordinates[i].y << ")";
 
-		if (i + 1 < coordinates.size())
+		if (i + 1 < m_coordinates.size())
 		{
 			std::cout << ", ";
 		}

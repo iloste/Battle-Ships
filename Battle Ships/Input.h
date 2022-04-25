@@ -26,9 +26,12 @@ public:
 		Default,
 	};
 
-
-	static Coordinate getCoordinateFromPlayer();
-	static KeyCode getKeyFromPlayer();
+	/// <summary>
+	/// Returns the key that was pressed.
+	/// If the arrow key was pressed, it first returns KeyCode::Arrow, then the arrow key that was pressed
+	/// </summary>
+	/// <returns></returns>
+	static KeyCode getKeyCodeFromPlayer();
 
 private:
 	static const int KeyCodeValues[10];

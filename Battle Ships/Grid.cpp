@@ -1,96 +1,93 @@
 #include "Grid.h"
 
-//const int Grid::gridSize = 10;
-
 Grid::Grid() {
-	fleet = Fleet();
+	m_fleet = Fleet();
 	bool showShipsOnGrid = true;
 	initialiseGrid(showShipsOnGrid);
 }
 
-Grid::Grid(bool showShipsOnGrid) {
-	fleet = Fleet();
-	initialiseGrid(showShipsOnGrid);
+
+Grid::Grid(bool _showShipsOnGrid) {
+	m_fleet = Fleet();
+	initialiseGrid(_showShipsOnGrid);
 }
 
 
-void Grid::moveLocation()
-{
-	int c = _getch();
-}
-
-void Grid::initialiseGrid(bool showShipsOnGrid) {
+void Grid::initialiseGrid(bool _showShipsOnGrid) {
 	initialiseWaterTiles();
 
-	if (showShipsOnGrid)
+	if (_showShipsOnGrid)
 	{
 		initialiseShipTiles();
 	}
 
-	initiaiseEmptySpaceTiles();
+	initiaiseSpacingTiles();
 }
 
 
 void Grid::initialiseWaterTiles() {
-	for (size_t x = 0; x < gridSize; x++)
+	for (size_t x = 0; x < m_gridSize; x++)
 	{
-		for (size_t y = 0; y < gridSize; y++)
+		for (size_t y = 0; y < m_gridSize; y++)
 		{
-			grid[x][y] = '~';
+			m_grid[x][y] = '~';
 		}
 	}
 }
 
 
-void Grid::initiaiseEmptySpaceTiles() {
-	for (size_t x = 0; x < secondGridSize; x++)
+void Grid::initiaiseSpacingTiles() {
+	for (size_t x = 0; x < m_spacingGridSize; x++)
 	{
-		for (size_t y = 0; y < secondGridSize; y++)
+		for (size_t y = 0; y < m_spacingGridSize; y++)
 		{
-			secondGrid[x][y] = ' ';
+			m_spacingGrid[x][y] = ' ';
 		}
 	}
 }
+
 
 void Grid::initialiseShipTiles() {
-	std::vector<Ship> ships = fleet.getShips();
+	std::vector<Ship> ships = m_fleet.getShips();
 
 	for (size_t i = 0; i < ships.size(); i++)
 	{
-		for (size_t j = 0; j < ships[i].coordinates.size(); j++)
+		for (size_t j = 0; j < ships[i].m_coordinates.size(); j++)
 		{
-			Coordinate coord = ships[i].coordinates[j];
-			grid[coord.x][coord.y] = 'o';
+			Coordinate coord = ships[i].m_coordinates[j];
+			m_grid[coord.x][coord.y] = 'o';
 		}
 	}
 }
 
 
 void Grid::displayGrid() {
-	Output::printInColour("   0 1 2 3 4 5 6 7 8 9\n", Output::Colour::White);
+	Output::print("   0 1 2 3 4 5 6 7 8 9\n", Output::Colour::White);
 
-	for (size_t x = 0; x < gridSize; x++)
+	for (size_t x = 0; x < m_gridSize; x++)
 	{
-		Output::printInColour(std::to_string(x) + " ", Output::Colour::White);
+		Output::print(std::to_string(x) + " ", Output::Colour::White);
 
-		for (size_t y = 0; y < gridSize; y++)
+		for (size_t y = 0; y < m_gridSize; y++)
 		{
-			Output::printInColour(std::string(1, secondGrid[y][x]), getColour(secondGrid[y][x]));
-			Output::printInColour(std::string(1, grid[y][x]), getColour(grid[y][x]));
+			// prints the spacing inbetween the grid tiles.
+			Output::print(std::string(1, m_spacingGrid[y][x]), getColour(m_spacingGrid[y][x]));
+			// prints the grid tiles
+			Output::print(std::string(1, m_grid[y][x]), getColour(m_grid[y][x]));
 		}
 
-		Output::printInColour(std::string(1, secondGrid[secondGridSize - 1][x]), getColour(secondGrid[secondGridSize - 1][x]));
+		// prints last empty space at the end of the line (used to highligth last tile in row if needed)
+		Output::print(std::string(1, m_spacingGrid[m_spacingGridSize - 1][x]), getColour(m_spacingGrid[m_spacingGridSize - 1][x]));
 
 		std::cout << "\n";
 	}
 }
 
 
-
-Output::Colour Grid::getColour(char c) {
+Output::Colour Grid::getColour(char _c) {
 	Output::Colour colour;
 
-	switch (c)
+	switch (_c)
 	{
 	case '@':
 	case '~':
@@ -115,17 +112,19 @@ Output::Colour Grid::getColour(char c) {
 }
 
 
-void Grid::setSelectedCoordinate(Coordinate _coord)
+void Grid::highlightCoordinate(Coordinate _coord)
 {
-	initiaiseEmptySpaceTiles();
-	secondGrid[_coord.x][_coord.y] = '|';
-	secondGrid[_coord.x + 1][_coord.y] = '|';
+	initiaiseSpacingTiles();
+	m_spacingGrid[_coord.x][_coord.y] = '|';
+	m_spacingGrid[_coord.x + 1][_coord.y] = '|';
 }
 
-void Grid::unselectAllCoordinates()
+
+void Grid::unhighlighCoordinate()
 {
-	initiaiseEmptySpaceTiles();
+	initiaiseSpacingTiles();
 }
+
 
 char Grid::getCell(Coordinate _coord)
 {
@@ -134,12 +133,13 @@ char Grid::getCell(Coordinate _coord)
 		throw std::runtime_error("Coordinate " + _coord.toString() + " is outside the bounds of the grid");
 	}
 
-	return grid[_coord.x][_coord.y];
+	return m_grid[_coord.x][_coord.y];
 }
+
 
 bool Grid::coordinateIsWithinBounds(Coordinate _coord)
 {
-	if (_coord.x < 0 || _coord.y < 0 || _coord.x >= gridSize || _coord.y >= gridSize)
+	if (_coord.x < 0 || _coord.y < 0 || _coord.x >= m_gridSize || _coord.y >= m_gridSize)
 	{
 		return false;
 	}
@@ -148,26 +148,27 @@ bool Grid::coordinateIsWithinBounds(Coordinate _coord)
 }
 
 
-void Grid::takeShot(Coordinate coord) {
-	if (fleet.hitShip(coord)) {
-		grid[coord.x][coord.y] = 'x';
+void Grid::takeShot(Coordinate _coord) {
+	if (m_fleet.hitShipAtCoordinate(_coord)) {
+		m_grid[_coord.x][_coord.y] = 'x';
 	}
 	else {
-		grid[coord.x][coord.y] = '@';
+		m_grid[_coord.x][_coord.y] = '@';
 	}
 }
+
 
 bool Grid::fleetDestroyed()
 {
-	return fleet.fleetDestroyed();
+	return m_fleet.fleetDestroyed();
 }
 
 
-void Grid::updateShipPositionAndOrientation(Input::KeyCode keycode, Ship& ship)
+void Grid::updateShipPositionAndOrientation(Input::KeyCode _keycode, Ship& _ship)
 {
 	Coordinate movement = Coordinate(0, 0);
 
-	switch (keycode)
+	switch (_keycode)
 	{
 	case Input::KeyCode::Up:
 	case Input::KeyCode::W:
@@ -188,13 +189,13 @@ void Grid::updateShipPositionAndOrientation(Input::KeyCode keycode, Ship& ship)
 	case Input::KeyCode::Enter:
 		break;
 	case Input::KeyCode::R:
-		ship.rotate();
-		ship.resetCoordinates(ship.coordinates[0]);
+		_ship.rotate();
+		_ship.resetCoordinates(_ship.m_coordinates[0]);
 
-		if (!shipWouldBeWithinConfinesOfGrid(ship, Coordinate(0, 0)))
+		if (!shipWouldBeWithinConfinesOfGrid(_ship, Coordinate(0, 0)))
 		{
-			ship.rotate();
-			ship.resetCoordinates(ship.coordinates[0]);
+			_ship.rotate();
+			_ship.resetCoordinates(_ship.m_coordinates[0]);
 		}
 		break;
 	case Input::KeyCode::Arrow:
@@ -205,24 +206,25 @@ void Grid::updateShipPositionAndOrientation(Input::KeyCode keycode, Ship& ship)
 		break;
 	}
 
-	if (shipWouldBeWithinConfinesOfGrid(ship, movement))
+	if (shipWouldBeWithinConfinesOfGrid(_ship, movement))
 	{
-		Coordinate newPosition = ship.coordinates[0] + movement;
-		ship.resetCoordinates(newPosition);
+		Coordinate newPosition = _ship.m_coordinates[0] + movement;
+		_ship.resetCoordinates(newPosition);
 	}
 }
 
-Coordinate Grid::getRandomCoordinateForShip(int shipSize, Ship::Orientation orientation)
-{
-	int maxX = gridSize;
-	int maxY = gridSize;
 
-	if (orientation == Ship::Orientation::Horizontal)
+Coordinate Grid::getRandomCoordinateForShip(int _shipSize, Ship::Orientation _orientation)
+{
+	int maxX = m_gridSize;
+	int maxY = m_gridSize;
+
+	if (_orientation == Ship::Orientation::Horizontal)
 	{
-		maxX -= shipSize;
+		maxX -= _shipSize;
 	}
 	else {
-		maxY -= shipSize;
+		maxY -= _shipSize;
 	}
 
 	int x = rand() % maxX;
@@ -231,24 +233,26 @@ Coordinate Grid::getRandomCoordinateForShip(int shipSize, Ship::Orientation orie
 	return Coordinate(x, y);
 }
 
-void Grid::showShipOnGrid(Ship& ship)
+
+void Grid::showShipOnGrid(Ship& _ship)
 {
-	for (size_t i = 0; i < ship.coordinates.size(); i++)
+	for (size_t i = 0; i < _ship.m_coordinates.size(); i++)
 	{
-		grid[ship.coordinates[i].x][ship.coordinates[i].y] = 'o';
+		m_grid[_ship.m_coordinates[i].x][_ship.m_coordinates[i].y] = 'o';
 	}
 }
 
-bool Grid::shipWouldBeWithinConfinesOfGrid(Ship& ship, Coordinate movement)
+
+bool Grid::shipWouldBeWithinConfinesOfGrid(Ship& _ship, Coordinate _movement)
 {
 	//check start of ship
-	Coordinate newStartPosition = ship.coordinates[0] + movement;
+	Coordinate newStartPosition = _ship.m_coordinates[0] + _movement;
 	if (!coordinateIsWithinBounds(newStartPosition))
 	{
 		return false;
 	}
 	//check end of ship
-	Coordinate newEndPosition = ship.coordinates[ship.shipSize - 1] + movement;
+	Coordinate newEndPosition = _ship.m_coordinates[_ship.m_shipSize - 1] + _movement;
 	if (!coordinateIsWithinBounds(newEndPosition))
 	{
 		return false;
@@ -270,33 +274,33 @@ void Grid::manuallyPlaceShips()
 
 	while (shipsPlaced < shipsToPlace)
 	{
-		setSelectedCoordinate(newShip.coordinates[0]);
+		highlightCoordinate(newShip.m_coordinates[0]);
 		initialiseWaterTiles();
 		initialiseShipTiles();
 		showShipOnGrid(newShip);
 		Output::ClearScreen();
-		Output::printInColour("Place your ships\n", Output::Colour::Green);
+		Output::print("Place your ships\n", Output::Colour::Green);
 		displayGrid();
 
 #pragma region Print Controls
-		Output::printInColour("Press");
-		Output::printInColour(" Enter ", Output::Colour::Green);
-		Output::printInColour("to place ship\n");
-		Output::printInColour("Press");
-		Output::printInColour(" R ", Output::Colour::Green);
-		Output::printInColour("to rotate ship\n");
+		Output::print("Press");
+		Output::print(" Enter ", Output::Colour::Green);
+		Output::print("to place ship\n");
+		Output::print("Press");
+		Output::print(" R ", Output::Colour::Green);
+		Output::print("to rotate ship\n");
 #pragma endregion
-		Output::printInColour(errorMessage, Output::Colour::Red);
+		Output::print(errorMessage, Output::Colour::Red);
 
-		keycode = Input::getKeyFromPlayer();
+		keycode = Input::getKeyCodeFromPlayer();
 		errorMessage = "";
 		updateShipPositionAndOrientation(keycode, newShip);
 
 		if (keycode == Input::KeyCode::Enter)
 		{
-			if (!fleet.shipCollidesWithFleet(newShip))
+			if (!m_fleet.shipCollidesWithFleet(newShip))
 			{
-				fleet.addShip(newShip);
+				m_fleet.addShip(newShip);
 				shipsPlaced++;
 
 				if (shipsPlaced < shipsToPlace)
@@ -310,7 +314,7 @@ void Grid::manuallyPlaceShips()
 		}
 	}
 
-	unselectAllCoordinates();
+	unhighlighCoordinate();
 }
 
 
@@ -336,11 +340,10 @@ void Grid::autoPlaceShips()
 		Coordinate origin = getRandomCoordinateForShip(shipSizes[shipsPlaced], orientation);
 		Ship ship = Ship(origin, shipSizes[shipsPlaced], orientation);
 
-		if (!fleet.shipCollidesWithFleet(ship))
+		if (!m_fleet.shipCollidesWithFleet(ship))
 		{
-			fleet.addShip(ship);
+			m_fleet.addShip(ship);
 			shipsPlaced++;
 		}
 	}
 }
-

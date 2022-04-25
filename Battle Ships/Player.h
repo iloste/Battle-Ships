@@ -14,14 +14,6 @@ protected:
 
 private:
 	Coordinate getCoordinateFromPlayer();
-
-
-
-
-
-
-	// Inherited via Agent
 	virtual void updateScreen() override;
-
 };
 

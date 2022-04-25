@@ -4,7 +4,6 @@
 
 static class Output
 {
-
 public:
 	enum class Colour
 	{
@@ -15,9 +14,13 @@ public:
 		Grey,
 	};
 
-	static const int colourValues[5];
 
-	static void printInColour(std::string message, Colour colour = Colour::White);
+	static void print(std::string _message, Colour _colour = Colour::White);
 	static void ClearScreen();
+
+
+private:
+	static const int m_colourValues[5];
+
 };
 

@@ -1,14 +1,15 @@
 #include "Output.h"
 
-const int Output::colourValues[5]{ 31, 32, 34, 37, 90 };
+const int Output::m_colourValues[5]{ 31, 32, 34, 37, 90 };
 
-void Output::printInColour(std::string message, Colour colour) {
+void Output::print(std::string _message, Colour _colour) {
 	{
-		std::string _colourValue = std::to_string(colourValues[(int)colour]);
-		message = "\x1B[" + _colourValue + "m" + message + "\033[0m";
-		std::cout << message;
+		std::string _colourValue = std::to_string(m_colourValues[(int)_colour]);
+		_message = "\x1B[" + _colourValue + "m" + _message + "\033[0m";
+		std::cout << _message;
 	}
 }
+
 
 void Output::ClearScreen()
 {

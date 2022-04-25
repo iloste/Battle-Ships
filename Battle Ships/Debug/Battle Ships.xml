@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        "Battle Ships"
+    </assembly>
+    <members>
+        <member name="M:Fleet.shipCollidesWithFleet(Ship*!System.Runtime.CompilerServices.IsImplicitlyDereferenced)">
+            <summary>
+Returns true if the given ship's coordinates intersect with any of the current ships in the fleet
+</summary>
+        </member>
+        <member name="M:Fleet.hitShipAtCoordinate(Coordinate)">
+            <summary>
+Returns true if part of one of the ships is at the given coordinate
+</summary>
+        </member>
+    </members>
+</doc>

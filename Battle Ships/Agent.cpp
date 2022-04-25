@@ -1,34 +1,35 @@
 #include "Agent.h"
 
 
-void Agent::setOpponent(Agent* opponent) {
-	this->opponent = opponent;
+void Agent::setOpponent(Agent* _opponent) {
+	this->m_opponent = _opponent;
 }
 
-void Agent::takeShot(Coordinate coord) {
-	grid.takeShot(coord);
+
+void Agent::takeShot(Coordinate _coord) {
+	m_grid.takeShot(_coord);
 }
+
 
 void Agent::displayGrid()
 {
-	grid.displayGrid();
+	m_grid.displayGrid();
 }
-
-
-
 
 
 bool Agent::fleetDestroyed()
 {
-	return grid.fleetDestroyed();
+	return m_grid.fleetDestroyed();
 }
 
-void Agent::setSelectedCoordinate(Coordinate _selectedCoordinate)
+
+void Agent::highlightCoordinateOnGrid(Coordinate _selectedCoordinate)
 {
-	grid.setSelectedCoordinate(_selectedCoordinate);
+	m_grid.highlightCoordinate(_selectedCoordinate);
 }
 
-void Agent::unselectAllCoordinates()
+
+void Agent::unhighlightAllCoordinates()
 {
-	grid.unselectAllCoordinates();
+	m_grid.unhighlighCoordinate();
 }

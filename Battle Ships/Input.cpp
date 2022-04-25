@@ -2,23 +2,13 @@
 
 const int Input::KeyCodeValues[10]{ 119, 97, 115, 100, 72, 80, 75,  77, 13, 114};
 
-Coordinate Input::getCoordinateFromPlayer() {
-	Output::printInColour("Enter the x coordinate\n", Output::Colour::White);
-	int x;
-	std::cin >> x;
 
-	Output::printInColour("Enter the y coordinate\n", Output::Colour::White);
-
-	int y;
-	std::cin >> y;
-
-	return Coordinate(x, y);
-}
-
-Input::KeyCode Input::getKeyFromPlayer()
+Input::KeyCode Input::getKeyCodeFromPlayer()
 {
 	int c = _getch();
 
+	// if the arrow key is pressed _getch() returns twice. In that scenario, this function is called twice,
+	// returning KeyCode::Arrow the first time and then which arrow was pressed.
 	if (c == 224)
 	{
 		return KeyCode::Arrow;

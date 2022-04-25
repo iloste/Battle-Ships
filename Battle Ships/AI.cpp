@@ -1,13 +1,10 @@
 #include "AI.h"
 
-
-
-
 AI::AI()
 {
 	bool showShipsOnGrid = false;
-	grid = Grid(showShipsOnGrid);
-	grid.autoPlaceShips();
+	m_grid = Grid(showShipsOnGrid);
+	m_grid.autoPlaceShips();
 }
 
 
@@ -17,9 +14,10 @@ void AI::takeTurn()
 	fireAtOpponent();
 	updateScreen();
 
-	Output::printInColour("Press enter to continue\n");
-	Input::getKeyFromPlayer();
+	Output::print("Press enter to continue\n");
+	Input::getKeyCodeFromPlayer();
 }
+
 
 Coordinate AI::getNextCoordinate()
 {
@@ -59,10 +57,10 @@ Coordinate AI::getNextCoordinate()
 void AI::fireAtOpponent()
 {
 	Coordinate coord = getNextCoordinate();
-	opponent->setSelectedCoordinate(coord);
-	opponent->takeShot(coord);
+	m_opponent->highlightCoordinateOnGrid(coord);
+	m_opponent->takeShot(coord);
 
-	if (opponent->grid.getCell(coord) == 'x')
+	if (m_opponent->m_grid.getCell(coord) == 'x')
 	{
 		addNextNeighboursToNextShot(coord);
 	}
@@ -72,9 +70,10 @@ void AI::fireAtOpponent()
 void AI::updateScreen()
 {
 	Output::ClearScreen();
-	Output::printInColour("Opponent's turn\n", Output::Colour::Red);
-	opponent->displayGrid();
+	Output::print("Opponent's turn\n", Output::Colour::Red);
+	m_opponent->displayGrid();
 }
+
 
 bool AI::shotAlreadyTaken(Coordinate _coordinate)
 {
@@ -89,6 +88,7 @@ bool AI::shotAlreadyTaken(Coordinate _coordinate)
 	return false;
 }
 
+
 void AI::addNextNeighboursToNextShot(Coordinate _coordinate)
 {
 	std::vector<Coordinate> neighbours{};
@@ -101,12 +101,10 @@ void AI::addNextNeighboursToNextShot(Coordinate _coordinate)
 	{
 		if (!shotAlreadyTaken(neighbours[i]))
 		{
-			if (opponent->grid.coordinateIsWithinBounds(neighbours[i]))
+			if (m_opponent->m_grid.coordinateIsWithinBounds(neighbours[i]))
 			{
 				m_nextShots.push(neighbours[i]);
 			}
 		}
 	}
 }
-
-

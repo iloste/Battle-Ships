@@ -5,16 +5,16 @@
 class Agent
 {
 public:
-	Grid grid{};
-	Agent* opponent;
+	Grid m_grid{};
+	Agent* m_opponent;
 
 	virtual void takeTurn() = 0;
-	void setOpponent(Agent* opponent);
-	virtual void takeShot(Coordinate coord);
+	void setOpponent(Agent* _opponent);
+	virtual void takeShot(Coordinate _coord);
 	virtual void displayGrid();
 	bool fleetDestroyed();
-	void setSelectedCoordinate(Coordinate _selectedCoordinate);
-	void unselectAllCoordinates();
+	void highlightCoordinateOnGrid(Coordinate _selectedCoordinate);
+	void unhighlightAllCoordinates();
 
 protected:
 	virtual void fireAtOpponent() = 0;

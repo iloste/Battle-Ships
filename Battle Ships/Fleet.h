@@ -5,22 +5,25 @@
 class Fleet
 {
 public:
-	//static const int numberOfShips;
 
 	Fleet();
-	//Fleet(bool autoPlaceShips);
-	std::vector<Ship>  getShips();
-	bool hitShip(Coordinate coord);
+	std::vector<Ship> getShips();
+
+	/// <summary>
+	/// Returns true if part of one of the ships is at the given coordinate
+	/// </summary>
+	bool hitShipAtCoordinate(Coordinate coord);
+
 	bool fleetDestroyed();
-	//void manuallyPlaceShips();
-	void autoPlaceShips();
 	void addShip(Ship& newShip);
+
+	/// <summary>
+	/// Returns true if the given ship's coordinates intersect with any of the current ships in the fleet
+	/// </summary>
 	bool shipCollidesWithFleet(Ship& ship);
 
 private:
-	static const int shipSizes[5];
-	Coordinate getCoordinateFromPlayer();
-	/*Ship::Orientation getOrientationFromPlayer();*/
-	std::vector<Ship> ships{};
+	static const int m_shipSizes[5];
+	std::vector<Ship> m_ships{};
 };
 

@@ -1,6 +1,3 @@
-// Battle Ships.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
 #include "Ship.h"
 #include "Fleet.h"
@@ -17,12 +14,12 @@ void initialiseGame();
 void gameLoop();
 
 
-
 int main()
 {
 	initialiseGame();
 	gameLoop();
 }
+
 
 void initialiseGame() {
 	std::srand(std::time(nullptr));
@@ -34,6 +31,7 @@ void initialiseGame() {
 	m_AI->setOpponent(m_player);
 }
 
+
 void gameLoop() {
 	bool gameRunning = true;
 
@@ -44,7 +42,7 @@ void gameLoop() {
 
 		if (m_AI->fleetDestroyed())
 		{
-			Output::printInColour("Player Won!", Output::Colour::Green);
+			Output::print("Player Won!", Output::Colour::Green);
 			gameRunning = false;
 			break;
 		}
@@ -55,12 +53,11 @@ void gameLoop() {
 
 		if (m_player->fleetDestroyed())
 		{
-			Output::printInColour("Player Lost!", Output::Colour::Red);
+			Output::print("Player Lost!", Output::Colour::Red);
 			gameRunning = false;
 			break;
 		}
 #pragma endregion
-
 	}
 }
 

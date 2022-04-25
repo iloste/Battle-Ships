@@ -6,37 +6,47 @@
 
 class Ship
 {
-
 public:
-
 	enum class Orientation
 	{
 		Horizontal,
 		Vertical,
 	};
 
-	bool placedOnBoard;
+	bool m_placedOnGrid;
 
 	Ship();
-	Ship(Coordinate origin, int size, Orientation orientation);
-	bool hitShip(Coordinate location);
+	Ship(Coordinate _origin, int _size, Orientation _orientation);
+	bool containsCoordinate(Coordinate _coordinate);
 	void printCoords();
-	std::vector<Coordinate> getCoordinates(Coordinate origin);
 
 	bool isDestroyed();
-	bool collidesWith(Ship& ship);
-	void resetCoordinates(Coordinate newOrigin);
+
+	/// <summary>
+	/// Returns true if any coordinate of this ship and the given ship intersect
+	/// </summary>
+	/// <param name="_ship"></param>
+	/// <returns></returns>
+	bool collidesWith(Ship& _ship);
+
+	/// <summary>
+	/// Recalculates the coordinates of the ships based on the orientation and the new origin point
+	/// </summary>
+	/// <param name="_newOrigin"></param>
+	void resetCoordinates(Coordinate _newOrigin);
+
+	/// <summary>
+	/// Toggles the ship orientation between horizontal and vertical
+	/// </summary>
 	void rotate();
 	
-	int shipSize{};
-	Orientation orientation{};
-	std::vector<Coordinate> coordinates{};
-	bool* hits;
+	int m_shipSize{};
+	Orientation m_orientation{};
+	std::vector<Coordinate> m_coordinates{};
 
-
-
-
-
+private:
+	std::vector<Coordinate> calculateCoordinatesOfShip(Coordinate _origin);
+	bool* m_hitsTaken;
 
 };
 
