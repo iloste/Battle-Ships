@@ -59,6 +59,7 @@ Coordinate AI::getNextCoordinate()
 void AI::fireAtOpponent()
 {
 	Coordinate coord = getNextCoordinate();
+	opponent->setSelectedCoordinate(coord);
 	opponent->takeShot(coord);
 
 	if (opponent->grid.getCell(coord) == 'x')

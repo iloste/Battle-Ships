@@ -35,30 +35,29 @@ void Fleet::autoPlaceShips() {
 
 void Fleet::addShip(Ship& newShip)
 {
-	// to do: check ship isn't null
 	ships.push_back(newShip);
 }
 
-void Fleet::manuallyPlaceShips() {
-	int shipsPlaced = 0;
-
-	while (shipsPlaced < 5)
-	{
-		Coordinate origin = getCoordinateFromPlayer();
-		Ship::Orientation orientation = getOrientationFromPlayer();
-		Ship newShip = Ship(origin, shipSizes[shipsPlaced], orientation);
-
-		if (!shipCollidesWithFleet(newShip))
-		{
-			ships.push_back(newShip);
-			shipsPlaced++;
-		}
-		else {
-			std::cout << "Ship collides with another. Please try again.\n";
-		}
-	}
-}
-
+//void Fleet::manuallyPlaceShips() {
+//	int shipsPlaced = 0;
+//
+//	while (shipsPlaced < 5)
+//	{
+//		Coordinate origin = getCoordinateFromPlayer();
+//		Ship::Orientation orientation = getOrientationFromPlayer();
+//		Ship newShip = Ship(origin, shipSizes[shipsPlaced], orientation);
+//
+//		if (!shipCollidesWithFleet(newShip))
+//		{
+//			ships.push_back(newShip);
+//			shipsPlaced++;
+//		}
+//		else {
+//			std::cout << "Ship collides with another. Please try again.\n";
+//		}
+//	}
+//}
+//
 
 Coordinate Fleet::getCoordinateFromPlayer() {
 	std::cout << "Enter the x coordinate" << "\n";
@@ -72,20 +71,20 @@ Coordinate Fleet::getCoordinateFromPlayer() {
 	return Coordinate(x, y);
 }
 
-Ship::Orientation Fleet::getOrientationFromPlayer() {
-	std::cout << "Choose Horizontal (1) or Vertical (2)" << "\n";
-	int playerInput;
-	//to do: try parse this
-	std::cin >> playerInput;
-
-	if (playerInput == 1)
-	{
-		return Ship::Orientation::Horizontal;
-	}
-	else {
-		return Ship::Orientation::Vertical;
-	}
-}
+//Ship::Orientation Fleet::getOrientationFromPlayer() {
+//	std::cout << "Choose Horizontal (1) or Vertical (2)" << "\n";
+//	int playerInput;
+//	//to do: try parse this
+//	std::cin >> playerInput;
+//
+//	if (playerInput == 1)
+//	{
+//		return Ship::Orientation::Horizontal;
+//	}
+//	else {
+//		return Ship::Orientation::Vertical;
+//	}
+//}
 
 
 bool Fleet::shipCollidesWithFleet(Ship& ship) {
