@@ -189,7 +189,6 @@ void Grid::updateShipPositionAndOrientation(Input::KeyCode keycode, Ship& ship)
 	case Input::KeyCode::Enter:
 		break;
 	case Input::KeyCode::R:
-		//TODO: do this rotation better. Maybe work out what the coords would be rather than rotating the ship and then rerotating the ship again.
 		ship.rotate();
 		ship.resetCoordinates(ship.coordinates[0]);
 

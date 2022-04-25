@@ -141,7 +141,6 @@
   <ItemGroup>
     <ClCompile Include="Agent.cpp" />
     <ClCompile Include="AI.cpp" />
-    <ClCompile Include="AIHit.cpp" />
     <ClCompile Include="Battle Ships.cpp" />
     <ClCompile Include="Coordinate.cpp" />
     <ClCompile Include="Fleet.cpp" />
@@ -154,7 +153,6 @@
   <ItemGroup>
     <ClInclude Include="Agent.h" />
     <ClInclude Include="AI.h" />
-    <ClInclude Include="AIHit.h" />
     <ClInclude Include="Coordinate.h" />
     <ClInclude Include="Fleet.h" />
     <ClInclude Include="Grid.h" />

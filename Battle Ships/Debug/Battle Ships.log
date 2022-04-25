@@ -1,4 +1,7 @@
-﻿  Grid.cpp
+﻿  AIHit.cpp
+  Grid.cpp
 C:\Users\LukeR\OneDrive\Documents\GitHub\Battle-Ships\Battle Ships\Output.h(22,2): warning C4091: 'static ': ignored on left of 'Output' when no variable is declared
 C:\Users\LukeR\OneDrive\Documents\GitHub\Battle-Ships\Battle Ships\Input.h(35,2): warning C4091: 'static ': ignored on left of 'Input' when no variable is declared
+  Generating Code...
+Output.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'Output.obj' or at 'C:\Users\LukeR\OneDrive\Documents\GitHub\Battle-Ships\Battle Ships\Debug\vc143.pdb'; linking object as if no debug info
   Battle Ships.vcxproj -> C:\Users\LukeR\OneDrive\Documents\GitHub\Battle-Ships\Battle Ships\Debug\Battle Ships.exe
