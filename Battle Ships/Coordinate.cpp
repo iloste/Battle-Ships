@@ -33,3 +33,10 @@ bool Coordinate::operator==(const Coordinate& coord) {
 
 	return false;
 }
+
+std::string Coordinate::toString()
+{
+	std::ostringstream oss;
+	oss << "(" << x << ", " << y << ")";
+	return oss.str();
+}

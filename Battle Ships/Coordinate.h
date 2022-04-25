@@ -1,4 +1,7 @@
 #pragma once
+#include <string>
+#include <sstream>
+
 class Coordinate
 {
 
@@ -12,7 +15,7 @@ public:
     Coordinate operator+(const Coordinate& coord); 
     Coordinate operator-(const Coordinate& coord); 
     bool operator==(const Coordinate& coord); 
-
+	std::string toString();
 
 	static Coordinate up() { return Coordinate(0, 1); }
 	static Coordinate down() { return Coordinate(0, -1); }

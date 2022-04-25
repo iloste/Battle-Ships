@@ -99,7 +99,7 @@ void AI::addNextNeighboursToNextShot(Coordinate _coordinate)
 	{
 		if (!shotAlreadyTaken(neighbours[i]))
 		{
-			if (opponent->grid.isCoordinateWithinBounds(neighbours[i]))
+			if (opponent->grid.coordinateIsWithinBounds(neighbours[i]))
 			{
 				m_nextShots.push(neighbours[i]);
 			}

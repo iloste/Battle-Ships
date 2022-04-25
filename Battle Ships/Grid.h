@@ -3,6 +3,7 @@
 #include <iostream>
 #include "Output.h"
 #include "Input.h"
+#include <stdexcept>
 //may not need this if the get key press is moved to input class
 #include <conio.h>
 
@@ -19,7 +20,7 @@ public:
 	void setSelectedCoordinate(Coordinate _coord);
 	void unselectAllCoordinates();
 	char getCell(Coordinate _coord);
-	bool isCoordinateWithinBounds(Coordinate _coord);
+	bool coordinateIsWithinBounds(Coordinate _coord);
 
 private:
 	Fleet fleet;

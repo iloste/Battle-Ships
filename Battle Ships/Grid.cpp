@@ -127,11 +127,15 @@ void Grid::unselectAllCoordinates()
 
 char Grid::getCell(Coordinate _coord)
 {
-	//TODO make sure coord is within grid. Make it a function
+	if (!coordinateIsWithinBounds(_coord))
+	{
+		throw std::runtime_error("Coordinate " + _coord.toString() + " is outside the bounds of the grid");
+	}
+
 	return grid[_coord.x][_coord.y];
 }
 
-bool Grid::isCoordinateWithinBounds(Coordinate _coord)
+bool Grid::coordinateIsWithinBounds(Coordinate _coord)
 {
 	if (_coord.x < 0 || _coord.y < 0 || _coord.x >= gridSize || _coord.y >= gridSize)
 	{
@@ -238,13 +242,13 @@ bool Grid::shipWouldBeWithinConfinesOfGrid(Ship& ship, Coordinate movement)
 {
 	//check start of ship
 	Coordinate newStartPosition = ship.coordinates[0] + movement;
-	if (!isCoordinateWithinBounds(newStartPosition))
+	if (!coordinateIsWithinBounds(newStartPosition))
 	{
 		return false;
 	}
 	//check end of ship
 	Coordinate newEndPosition = ship.coordinates[ship.shipSize - 1] + movement;
-	if (!isCoordinateWithinBounds(newEndPosition))
+	if (!coordinateIsWithinBounds(newEndPosition))
 	{
 		return false;
 	}
