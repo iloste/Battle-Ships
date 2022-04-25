@@ -26,7 +26,8 @@ private:
 	Fleet fleet;
 	static const int gridSize = 10;
 	char grid[gridSize][gridSize]{};
-	char secondGrid[gridSize + 1][gridSize + 1]{};
+	static const int secondGridSize = 11;
+	char secondGrid[secondGridSize][secondGridSize]{};
 
 	Coordinate currentLocation{};
 	void moveLocation();

@@ -23,7 +23,6 @@ void Player::fireAtOpponent()
 
 Coordinate Player::getCoordinateFromPlayer()
 {
-	//TODO: make sure you can't leave grid when firing
 	Coordinate selectedCoordinate = Coordinate(0, 0);
 	opponent->setSelectedCoordinate(selectedCoordinate);
 	updateScreen();
@@ -38,29 +37,41 @@ Coordinate Player::getCoordinateFromPlayer()
 		{
 		case Input::KeyCode::W:
 		case Input::KeyCode::Up:
-			// adds down because 0, 0 of the grid starts at the top and to go down to 0, 1 you increase the coord value rather than decrease
-			selectedCoordinate = selectedCoordinate + Coordinate::down();
-			opponent->setSelectedCoordinate(selectedCoordinate);
-			updateScreen();
+			if (opponent->grid.coordinateIsWithinBounds(selectedCoordinate + Coordinate::down()))
+			{
+				// adds down because 0, 0 of the grid starts at the top and to go down to 0, 1 you increase the coord value rather than decrease
+				selectedCoordinate = selectedCoordinate + Coordinate::down();
+				opponent->setSelectedCoordinate(selectedCoordinate);
+				updateScreen();
+			}
 			break;
 		case Input::KeyCode::A:
 		case Input::KeyCode::Left:
-			selectedCoordinate = selectedCoordinate + Coordinate::left();
-			opponent->setSelectedCoordinate(selectedCoordinate);
-			updateScreen();
+			if (opponent->grid.coordinateIsWithinBounds(selectedCoordinate + Coordinate::left()))
+			{
+				selectedCoordinate = selectedCoordinate + Coordinate::left();
+				opponent->setSelectedCoordinate(selectedCoordinate);
+				updateScreen();
+			}
 			break;
 		case Input::KeyCode::S:
 		case Input::KeyCode::Down:
-			// adds up because 0, 0 of the grid starts at the top and to go down to 0, 1 you increase the coord value rather than decrease
-			selectedCoordinate = selectedCoordinate + Coordinate::up();
-			opponent->setSelectedCoordinate(selectedCoordinate);
-			updateScreen();
+			if (opponent->grid.coordinateIsWithinBounds(selectedCoordinate + Coordinate::up()))
+			{
+				// adds up because 0, 0 of the grid starts at the top and to go down to 0, 1 you increase the coord value rather than decrease
+				selectedCoordinate = selectedCoordinate + Coordinate::up();
+				opponent->setSelectedCoordinate(selectedCoordinate);
+				updateScreen();
+			}
 			break;
 		case Input::KeyCode::Right:
 		case Input::KeyCode::D:
-			selectedCoordinate = selectedCoordinate + Coordinate::right();
-			opponent->setSelectedCoordinate(selectedCoordinate);
-			updateScreen();
+			if (opponent->grid.coordinateIsWithinBounds(selectedCoordinate + Coordinate::right()))
+			{
+				selectedCoordinate = selectedCoordinate + Coordinate::right();
+				opponent->setSelectedCoordinate(selectedCoordinate);
+				updateScreen();
+			}
 			break;
 		case Input::KeyCode::Enter:
 			opponent->unselectAllCoordinates();

@@ -44,9 +44,9 @@ void Grid::initialiseWaterTiles() {
 
 
 void Grid::initiaiseEmptySpaceTiles() {
-	for (size_t x = 0; x < gridSize; x++)
+	for (size_t x = 0; x < secondGridSize; x++)
 	{
-		for (size_t y = 0; y < gridSize; y++)
+		for (size_t y = 0; y < secondGridSize; y++)
 		{
 			secondGrid[x][y] = ' ';
 		}
@@ -66,6 +66,7 @@ void Grid::initialiseShipTiles() {
 	}
 }
 
+
 void Grid::displayGrid() {
 	Output::printInColour("   0 1 2 3 4 5 6 7 8 9\n", Output::Colour::White);
 
@@ -78,6 +79,8 @@ void Grid::displayGrid() {
 			Output::printInColour(std::string(1, secondGrid[y][x]), getColour(secondGrid[y][x]));
 			Output::printInColour(std::string(1, grid[y][x]), getColour(grid[y][x]));
 		}
+
+		Output::printInColour(std::string(1, secondGrid[secondGridSize - 1][x]), getColour(secondGrid[secondGridSize - 1][x]));
 
 		std::cout << "\n";
 	}
